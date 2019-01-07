@@ -1,15 +1,15 @@
 ## NeoPy
 NeoPy is a way to control your NeoPixel LEDs via WiFi in Python.
 
-#Hardware
+# Hardware
 - Fishino or NodeMCU
 - (optional) Raspberry Pi
 
-#Steps
+# Steps
 1) Setup Fishino or NodeMCU sketch with your WiFi credentials and LEDs number and flash the sketch
 2) Include neopy.py in your Python script to control LEDs over WiFi
 
-#NeoPy.py usage
+# NeoPy.py usage
 - Instance one NeoPy object with 90 LEDs, send commands to these IP and PORT:
 ```
     strip = NeoPy(90, "192.168.1.123", 4242)
@@ -31,7 +31,7 @@ NeoPy is a way to control your NeoPixel LEDs via WiFi in Python.
     color = strip.Wheel(128)
     strip.SetAll(color)
 ```
-- Refresh the strip:
+- Refresh the strip (send command over WiFi):
 ```
     strip.Show()
 ```
