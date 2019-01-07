@@ -4,20 +4,6 @@ Description: This class allow UDP communication between Python and NodeMCU/Fishi
 Author: Luca Bellan
 Version: 1.2
 Date: 03-01-2019
-USAGE
-    - Instance one NeoPy object with 90 LEDs, send commands to these IP and PORT:
-        strip = NeoPy(90, "192.168.1.123", 4242)
-    - Set the third LED to RED:
-        strip.Set(2, (255, 0, 0))
-    - Set all LEDs to blue:
-        strip.SetAll((0, 0, 255))
-    - Set all LEDs half brightness (input values from 0 to 100):
-        strip.SetBrightness(50)
-    - Retrieve one RGB color from Wheel (input values from 0 to 255) and set to all LEDs:
-        color = strip.Wheel(128)
-        strip.SetAll(color)
-    - Refresh the strip:
-        strip.Show()
 """
 
 
