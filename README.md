@@ -1,4 +1,4 @@
-## Drink Maker
+## NeoPy
 NeoPy is a way to control your NeoPixel LEDs via WiFi in Python.
 
 #Hardware
