@@ -11,7 +11,7 @@ from neopy import NeoPy
 import time, random
 
 
-star = NeoPy(56, "192.168.1.8", 4242)
+star = NeoPy(56, "192.168.1.8")
 
 
 print("Sparkling white star (300 times)")
