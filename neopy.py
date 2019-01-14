@@ -25,7 +25,7 @@ class NeoPy():
         self.TOP_RIGHT = 1
         self.BOTTOM_LEFT = 2
         self.BOTTOM_RIGHT = 3
-        self.start = self.TOP_LEFT
+        self.startled = self.TOP_LEFT
         self.ip = ip
         self.port = port
         self.Show()
@@ -33,7 +33,7 @@ class NeoPy():
     def IsMatrix(self, mode = False, w = 1, h = 1, start = 0):
         if start in [0, 1, 2, 3] and w > 0 and h > 0:
             self.matrix = mode
-            self.start = start
+            self.startled = start
             self.w = w
             self.h = h
         else:
@@ -46,6 +46,17 @@ class NeoPy():
             print("NeoPy error: index out of range (" + str(index) + ").")            
 
     def SetPixel(self, x, y, color):
+        if self.startled == self.TOP_RIGHT:
+            oldx = x
+            x = y
+            y = self.w - oldx - 1
+        elif self.startled == self.BOTTOM_LEFT:
+            oldx = x
+            x = self.w - y - 1
+            y = oldx
+        elif self.startled == self.BOTTOM_RIGHT:
+            x = self.w - x - 1
+            y = self.w - y - 1
         if self.matrix and x < self.w and y < self.h:
             pos = y * self.w + x
             if y % 2:
