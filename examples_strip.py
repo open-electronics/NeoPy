@@ -1,6 +1,6 @@
 """
 Description: Examples for NeoPixel 150 LEDs strip
-Product: https://www.futurashop.it/NEOPIXEL_STRIP_RGB_STRIP150LED
+Product: https://store.open-electronics.org/STRIP150LED-STRIP-150%20LED-RGB-ADDRESSABLE-WS2812B-NEOPIXEL-2846-STRIP150LED
 Author: Luca Bellan
 Version: 1.0
 Date: 11-01-2019

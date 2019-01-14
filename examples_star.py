@@ -1,6 +1,6 @@
 """
 Description: Examples for NeoPixel star
-Product: https://www.futurashop.it/stella-natale-LED-neopixel-ft1300m
+Product: https://store.open-electronics.org/FT1300M-CHRISTMAS-STAR-WITH-LED-NEOPIXEL
 Author: Luca Bellan
 Version: 1.0
 Date: 10-01-2019
