@@ -35,7 +35,7 @@ for c in range(20):
 
 print("Spiral (10 times)")
 
-for c in range(5):
+for c in range(10):
     color = matrix.Wheel(random.randrange(256))
     for g in range(6):
         for i in range(g, matrix.w - g):
@@ -59,7 +59,7 @@ for c in range(5):
 
 print("Crossing lines (15 times)")
 
-for c in range(10):
+for c in range(15):
     color1 = matrix.Wheel(random.randrange(256))
     color2 = matrix.Wheel(random.randrange(256))
     for col in range(matrix.w):
