@@ -31,6 +31,14 @@ NeoPy is a way to control your NeoPixel LEDs via WiFi in Python.
     color = strip.Wheel(128)
     strip.SetAll(color)
 ```
+- LED matrix mode (True/False, Width, Height, First pixel position [TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT]):
+```
+    strip.IsMatrix(True, 12, 12, matrix.BOTTOM_LEFT)
+```
+- Set pixel color of a LED matrix (position 2,4 and colore green):
+```
+    strip.SetPixel(2, 4, (0, 255, 0))
+```
 - Refresh the strip (send command over WiFi):
 ```
     strip.Show()
