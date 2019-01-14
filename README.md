@@ -10,9 +10,9 @@ NeoPy is a way to control your NeoPixel LEDs via WiFi in Python.
 2) Include neopy.py in your Python script to control LEDs over WiFi
 
 ## NeoPy.py usage
-- Instance one NeoPy object with 90 LEDs, send commands to these IP and PORT:
+- Instance one NeoPy object with 90 LEDs, send commands to these IP (default port = 4242):
 ```
-    strip = NeoPy(90, "192.168.1.123", 4242)
+    strip = NeoPy(90, "192.168.1.123")
 ```
 - Set the third LED to RED:
 ```
