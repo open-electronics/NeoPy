@@ -36,14 +36,10 @@ class NeoPy():
             self.startled = start
             self.w = w
             self.h = h
-        else:
-            print("NeoPy error: wrong matrix init.")
 
     def Set(self, index, color):
         if index >= 0 and index <= len(self.strip):
-            self.strip[index] = color
-        else:
-            print("NeoPy error: index out of range (" + str(index) + ").")            
+            self.strip[index] = color           
 
     def SetPixel(self, x, y, color):
         if self.startled == self.TOP_RIGHT:
@@ -62,8 +58,6 @@ class NeoPy():
             if y % 2:
                 pos = y * self.w + (self.w - x - 1)
             self.Set(pos, color)
-        else:
-            print("NeoPy error: index out of range (" + str(x) + ", " + str(y) + ").") 
 
     def SetAll(self, color):
         for i in range(len(self.strip)):
@@ -72,8 +66,6 @@ class NeoPy():
     def SetBrightness(self, value):
         if value >= 0 and value <= 100:
             self.brightness = value
-        else:
-            print("NeoPy error: value out of range (0-100).") 
 
     def Wheel(self, position):
         position = 255 - position;

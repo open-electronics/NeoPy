@@ -3,7 +3,7 @@ Description: Examples for NeoPixel 12x12 matrix
 Product: 
 Author: Luca Bellan
 Version: 1.0
-Date: 14-01-2019
+Date: 17-01-2019
 """
 
 
@@ -11,10 +11,28 @@ from neopy import NeoPy
 import time, random
 
 
+numbers = {}
+numbers["0"] = [(1,1,1), (1,0,1), (1,0,1), (1,0,1), (1,1,1)]
+numbers["1"] = [(0,1,0), (0,1,0), (0,1,0), (0,1,0), (0,1,0)]
+numbers["2"] = [(1,1,1), (0,0,1), (1,1,1), (1,0,0), (1,1,1)]
+numbers["3"] = [(1,1,1), (0,0,1), (0,1,1), (0,0,1), (1,1,1)]
+numbers["4"] = [(1,0,1), (1,0,1), (1,1,1), (0,0,1), (0,0,1)]
+numbers["5"] = [(1,1,1), (1,0,0), (1,1,1), (0,0,1), (1,1,1)]
+numbers["6"] = [(1,1,1), (1,0,0), (1,1,1), (1,0,1), (1,1,1)]
+numbers["7"] = [(1,1,1), (0,0,1), (0,0,1), (0,0,1), (0,0,1)]
+numbers["8"] = [(1,1,1), (1,0,1), (1,1,1), (1,0,1), (1,1,1)]
+numbers["9"] = [(1,1,1), (1,0,1), (1,1,1), (0,0,1), (1,1,1)]
+numbers[":"] = [(0,0,0), (0,1,0), (0,0,0), (0,1,0), (0,0,0)]
+numbers["/"] = [(0,0,0), (0,0,1), (0,1,0), (1,0,0), (0,0,0)]
+
+
+
+
 matrix = NeoPy(144, "192.168.1.8")
 matrix.IsMatrix(True, 12, 12, matrix.BOTTOM_LEFT)
 
-matrix.SetBrightness(90)
+matrix.SetBrightness(80)
+
 
 
 print("Hypnotic squares (20 times)")
@@ -95,20 +113,8 @@ for c in range(400):
 
 print("Clock")
 
-numbers = {}
-numbers[0] = [(0,1,1,0), (1,0,0,1), (1,0,0,1), (1,0,0,1), (0,1,1,0)]
-numbers[1] = [(0,1,1,0), (0,0,1,0), (0,0,1,0), (0,0,1,0), (0,1,1,1)]
-numbers[2] = [(1,1,1,0), (0,0,0,1), (0,1,1,0), (1,0,0,0), (1,1,1,1)]
-numbers[3] = [(1,1,1,0), (0,0,0,1), (0,1,1,0), (0,0,0,1), (1,1,1,0)]
-numbers[4] = [(1,0,1,0), (1,0,1,0), (1,0,1,0), (1,1,1,1), (0,0,1,0)]
-numbers[5] = [(1,1,1,1), (1,0,0,0), (1,1,1,0), (0,0,0,1), (1,1,1,0)]
-numbers[6] = [(0,1,1,0), (1,0,0,0), (1,1,1,0), (1,0,0,1), (0,1,1,0)]
-numbers[7] = [(1,1,1,1), (0,0,0,1), (0,0,1,0), (0,1,0,0), (0,1,0,0)]
-numbers[8] = [(0,1,1,0), (1,0,0,1), (0,1,1,0), (1,0,0,1), (0,1,1,0)]
-numbers[9] = [(0,1,1,0), (1,0,0,1), (0,1,1,1), (0,0,0,1), (0,1,1,0)]
 
 
-color = (100, 100, 100)
 orario = ""
 while True:
     if orario != time.strftime("%H%M"):
@@ -118,25 +124,76 @@ while True:
         x = StartX
         y = StartY
         cont = 0
-        matrix.SetAll((100, 0, 0))
+        matrix.SetAll((0, 0, 100))
         matrix.Show()
         for c in orario:
-            if int(c) in numbers:
+            if c in numbers:
                 y = StartY
-                for row in numbers[int(c)]:
-                    x = StartX + 5 * cont
+                for row in numbers[c]:
+                    x = StartX + 4 * cont
                     for p in row:
                         if p == 1:
-                            matrix.SetPixel(x, y, color)
+                            matrix.SetPixel(x, y, (100, 100, 100))
                         x += 1
                     y += 1
                 cont += 1
                 if cont == 2:
                     StartY += 7
-                    StartX = 3
+                    StartX = 5
                     cont = 0
         matrix.Show()
 
+
+
+
+
+print("Date and time")
+                    
+def DrawString(string, x, y):
+    cont = 0
+    for c in string:
+        if c in numbers:
+            Relative_x = x
+            Relative_y = y
+            if Relative_x + 2 <= 11:
+                for row in numbers[c]:
+                    Relative_x = x + 4 * cont
+                    for cell in row:
+                        if cell == 1:
+                            matrix.SetPixel(Relative_x, Relative_y, (100, 100, 100))
+                        Relative_x += 1
+                    Relative_y += 1
+                cont += 1
+
+Time_pos_x = 11
+Time_pos_y = 0
+Date_pos_x = 11
+Date_pos_y = 7
+while True:
+    for r in range(12):
+        for c in range(6):
+            matrix.SetPixel(r, c, (0, 0, 100))
+        for c in range(5, 7):
+            matrix.SetPixel(r, c, (0, 100, 0))
+        for c in range(7, 12):
+            matrix.SetPixel(r, c, (100, 0, 0))
+    matrix.Show()
+    Time = time.strftime("%H:%M")
+    Date = time.strftime("%d/%m/%Y")
+    Time_pos_x -= 1
+    if Time_pos_x < len(Time) * -4:
+        Time_pos_x = 11
+    DrawString(Time, Time_pos_x, Time_pos_y)
+    Date_pos_x -= 1
+    if Date_pos_x < len(Date) * -4:
+        Date_pos_x = 11
+    DrawString(Date, Date_pos_x, Date_pos_y)
+    matrix.Show()
+    time.sleep(0.3)
+
+
+
+                      
 
 
 
