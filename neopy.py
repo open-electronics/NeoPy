@@ -10,6 +10,7 @@ Date: 14-01-2019
 import socket
 import time
 import random
+import math
 
 
 class NeoPy():
@@ -19,6 +20,7 @@ class NeoPy():
         self.brightness = 80
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.matrix = False
+        self.number = 1
         self.w = 1
         self.h = 1
         self.TOP_LEFT = 0
@@ -30,10 +32,11 @@ class NeoPy():
         self.port = port
         self.Show()
 
-    def IsMatrix(self, mode = False, w = 1, h = 1, start = 0):
+    def IsMatrix(self, mode = False, number = 1, w = 1, h = 1, start = 0):
         if start in [0, 1, 2, 3] and w > 0 and h > 0:
             self.matrix = mode
             self.startled = start
+            self.number = number
             self.w = w
             self.h = h
 
@@ -42,18 +45,19 @@ class NeoPy():
             self.strip[index] = color           
 
     def SetPixel(self, x, y, color):
-        if self.startled == self.TOP_RIGHT:
-            oldx = x
-            x = y
-            y = self.w - oldx - 1
-        elif self.startled == self.BOTTOM_LEFT:
-            oldx = x
-            x = self.w - y - 1
-            y = oldx
-        elif self.startled == self.BOTTOM_RIGHT:
-            x = self.w - x - 1
-            y = self.w - y - 1
-        if self.matrix and x < self.w and y < self.h:
+        if self.matrix and x < (self.w * self.number) and y < self.h:
+            matr = math.floor(x / self.w)
+            if self.startled == self.TOP_RIGHT:
+                oldx = x
+                x = y
+                y = self.w - oldx - 1
+            elif self.startled == self.BOTTOM_LEFT:
+                oldx = x
+                x = self.w - y - 1
+                y = oldx
+            elif self.startled == self.BOTTOM_RIGHT:
+                x = self.w - x - 1
+                y = self.w - y - 1
             pos = y * self.w + x
             if y % 2:
                 pos = y * self.w + (self.w - x - 1)

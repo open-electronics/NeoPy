@@ -11,19 +11,19 @@ from neopy import NeoPy
 import time, random
 
 
-numbers = {}
-numbers["0"] = [(1,1,1), (1,0,1), (1,0,1), (1,0,1), (1,1,1)]
-numbers["1"] = [(0,1,0), (0,1,0), (0,1,0), (0,1,0), (0,1,0)]
-numbers["2"] = [(1,1,1), (0,0,1), (1,1,1), (1,0,0), (1,1,1)]
-numbers["3"] = [(1,1,1), (0,0,1), (0,1,1), (0,0,1), (1,1,1)]
-numbers["4"] = [(1,0,1), (1,0,1), (1,1,1), (0,0,1), (0,0,1)]
-numbers["5"] = [(1,1,1), (1,0,0), (1,1,1), (0,0,1), (1,1,1)]
-numbers["6"] = [(1,1,1), (1,0,0), (1,1,1), (1,0,1), (1,1,1)]
-numbers["7"] = [(1,1,1), (0,0,1), (0,0,1), (0,0,1), (0,0,1)]
-numbers["8"] = [(1,1,1), (1,0,1), (1,1,1), (1,0,1), (1,1,1)]
-numbers["9"] = [(1,1,1), (1,0,1), (1,1,1), (0,0,1), (1,1,1)]
-numbers[":"] = [(0,0,0), (0,1,0), (0,0,0), (0,1,0), (0,0,0)]
-numbers["/"] = [(0,0,0), (0,0,1), (0,1,0), (1,0,0), (0,0,0)]
+symbols = {}
+symbols["0"] = [(1,1,1), (1,0,1), (1,0,1), (1,0,1), (1,1,1)]
+symbols["1"] = [(0,1,0), (0,1,0), (0,1,0), (0,1,0), (0,1,0)]
+symbols["2"] = [(1,1,1), (0,0,1), (1,1,1), (1,0,0), (1,1,1)]
+symbols["3"] = [(1,1,1), (0,0,1), (0,1,1), (0,0,1), (1,1,1)]
+symbols["4"] = [(1,0,1), (1,0,1), (1,1,1), (0,0,1), (0,0,1)]
+symbols["5"] = [(1,1,1), (1,0,0), (1,1,1), (0,0,1), (1,1,1)]
+symbols["6"] = [(1,1,1), (1,0,0), (1,1,1), (1,0,1), (1,1,1)]
+symbols["7"] = [(1,1,1), (0,0,1), (0,0,1), (0,0,1), (0,0,1)]
+symbols["8"] = [(1,1,1), (1,0,1), (1,1,1), (1,0,1), (1,1,1)]
+symbols["9"] = [(1,1,1), (1,0,1), (1,1,1), (0,0,1), (1,1,1)]
+symbols[":"] = [(0,0,0), (0,1,0), (0,0,0), (0,1,0), (0,0,0)]
+symbols["/"] = [(0,0,0), (0,0,1), (0,1,0), (1,0,0), (0,0,0)]
 
 
 
@@ -127,9 +127,9 @@ while True:
         matrix.SetAll((0, 0, 100))
         matrix.Show()
         for c in orario:
-            if c in numbers:
+            if c in symbols:
                 y = StartY
-                for row in numbers[c]:
+                for row in symbols[c]:
                     x = StartX + 4 * cont
                     for p in row:
                         if p == 1:
@@ -149,18 +149,18 @@ while True:
 
 print("Date and time")
                     
-def DrawString(string, x, y):
+def DrawString(string, x, y, color):
     cont = 0
     for c in string:
-        if c in numbers:
+        if c in symbols:
             Relative_x = x
             Relative_y = y
             if Relative_x + 2 <= 11:
-                for row in numbers[c]:
+                for row in symbols[c]:
                     Relative_x = x + 4 * cont
                     for cell in row:
                         if cell == 1:
-                            matrix.SetPixel(Relative_x, Relative_y, (100, 100, 100))
+                            matrix.SetPixel(Relative_x, Relative_y, color)
                         Relative_x += 1
                     Relative_y += 1
                 cont += 1
@@ -183,11 +183,11 @@ while True:
     Time_pos_x -= 1
     if Time_pos_x < len(Time) * -4:
         Time_pos_x = 11
-    DrawString(Time, Time_pos_x, Time_pos_y)
+    DrawString(Time, Time_pos_x, Time_pos_y, (100, 100, 100))
     Date_pos_x -= 1
     if Date_pos_x < len(Date) * -4:
         Date_pos_x = 11
-    DrawString(Date, Date_pos_x, Date_pos_y)
+    DrawString(Date, Date_pos_x, Date_pos_y, (100, 100, 100))
     matrix.Show()
     time.sleep(0.3)
 
