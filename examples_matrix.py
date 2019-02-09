@@ -25,11 +25,43 @@ symbols["9"] = [(1,1,1), (1,0,1), (1,1,1), (0,0,1), (1,1,1)]
 symbols[":"] = [(0,0,0), (0,1,0), (0,0,0), (0,1,0), (0,0,0)]
 symbols["/"] = [(0,0,0), (0,0,1), (0,1,0), (1,0,0), (0,0,0)]
 
+icons = {}
+icons["sun"] = [(0, 0, 0, 0, 0, 0),
+                (0, 1, 1, 1, 1, 0),
+                (0, 1, 1, 1, 1, 0),
+                (0, 1, 1, 1, 1, 0),
+                (0, 1, 1, 1, 1, 0),
+                (0, 0, 0, 0, 0, 0)]
+icons["cloud"]=[(0, 0, 0, 0, 0, 0),
+                (0, 0, 1, 1, 0, 0),
+                (0, 1, 1, 1, 0, 0),
+                (1, 1, 1, 1, 1, 0),
+                (1, 1, 1, 1, 1, 1),
+                (0, 0, 0, 0, 0, 0)]
+icons["rain"] =[(0, 0, 1, 1, 0, 0),
+                (0, 1, 1, 1, 1, 0),
+                (1, 1, 1, 1, 1, 1),
+                (0, 0, 0, 0, 0, 0),
+                (1, 0, 1, 0, 1, 0),
+                (0, 0, 0, 0, 0, 0)]
+icons["snow"] = [(0, 0, 0, 0, 0, 0),
+                (0, 0, 1, 0, 1, 0),
+                (0, 1, 0, 1, 0, 1),
+                (0, 0, 1, 1, 1, 0),
+                (0, 1, 0, 1, 0, 1),
+                (0, 0, 1, 0, 1, 0)]
+icons["fog"] = [(0, 0, 0, 0, 0, 0),
+                (0, 1, 1, 1, 1, 0),
+                (0, 0, 0, 0, 0, 0),
+                (0, 1, 1, 1, 1, 0),
+                (0, 0, 0, 0, 0, 0),
+                (0, 1, 1, 1, 1, 0)]
+
 
 
 
 matrix = NeoPy(144, "192.168.1.8")
-matrix.IsMatrix(True, 12, 12, matrix.BOTTOM_LEFT)
+matrix.IsMatrix(True, 2, 12, 12, matrix.BOTTOM_LEFT)
 
 matrix.SetBrightness(80)
 
@@ -113,42 +145,6 @@ for c in range(400):
 
 print("Clock")
 
-
-
-orario = ""
-while True:
-    if orario != time.strftime("%H%M"):
-        orario = time.strftime("%H%M")
-        StartX = 0
-        StartY = 0
-        x = StartX
-        y = StartY
-        cont = 0
-        matrix.SetAll((0, 0, 100))
-        matrix.Show()
-        for c in orario:
-            if c in symbols:
-                y = StartY
-                for row in symbols[c]:
-                    x = StartX + 4 * cont
-                    for p in row:
-                        if p == 1:
-                            matrix.SetPixel(x, y, (100, 100, 100))
-                        x += 1
-                    y += 1
-                cont += 1
-                if cont == 2:
-                    StartY += 7
-                    StartX = 5
-                    cont = 0
-        matrix.Show()
-
-
-
-
-
-print("Date and time")
-                    
 def DrawString(string, x, y, color):
     cont = 0
     for c in string:
@@ -165,35 +161,65 @@ def DrawString(string, x, y, color):
                     Relative_y += 1
                 cont += 1
 
-Time_pos_x = 11
-Time_pos_y = 0
-Date_pos_x = 11
-Date_pos_y = 7
+
 while True:
-    for r in range(12):
-        for c in range(6):
-            matrix.SetPixel(r, c, (0, 0, 100))
-        for c in range(5, 7):
-            matrix.SetPixel(r, c, (0, 100, 0))
-        for c in range(7, 12):
-            matrix.SetPixel(r, c, (100, 0, 0))
+    matrix.SetAll((0, 0, 70))
+    DrawString(time.strftime("%H"), 2, 0, (100, 100, 100))
+    DrawString(time.strftime("%M"), 2, 7, (100, 100, 100))
     matrix.Show()
-    Time = time.strftime("%H:%M")
-    Date = time.strftime("%d/%m/%Y")
-    Time_pos_x -= 1
-    if Time_pos_x < len(Time) * -4:
-        Time_pos_x = 11
-    DrawString(Time, Time_pos_x, Time_pos_y, (100, 100, 100))
-    Date_pos_x -= 1
-    if Date_pos_x < len(Date) * -4:
-        Date_pos_x = 11
-    DrawString(Date, Date_pos_x, Date_pos_y, (100, 100, 100))
+    time.sleep(1)
+
+
+
+
+print("Weather")
+
+def DrawIcon(icon, x, y, color):
+    if icon in icons:
+        Relative_x = x
+        Relative_y = y
+        for row in icons[icon]:
+            Relative_x = x
+            for cell in row:
+                if cell == 1:
+                    matrix.SetPixel(Relative_x, Relative_y, color)
+                Relative_x += 1
+            Relative_y += 1
+
+
+import pyowm
+
+owm = pyowm.OWM("a38b3852cd6d01808a1a81e0bc44ceb3")
+observation = owm.weather_at_place("milano")
+
+while True:
+    w = observation.get_weather()
+    matrix.SetAll((0, 0, 30))
+    temp = str(int(w.get_temperature("celsius")["temp"])) + "°"
+    DrawString(temp, 0, 0, (100, 100, 100))
+    icon = w.get_weather_icon_name()
+    #   Sole
+    if icon in ["01d", "01n"]:
+        color = (100, 100, 0)
+        DrawIcon("sun", 3, 6, color)
+    #   Nuvole
+    elif icon in ["02d", "03d", "04d", "02n", "03n", "04n"]:
+        color = (100, 100, 100)
+        DrawIcon("cloud", 3, 6, color)
+    #   Pioggia
+    elif icon in ["09d", "10d", "11d", "09n", "10n", "11n"]:
+        color = (10, 10, 250)
+        DrawIcon("rain", 3, 6, color)
+    #   Neve
+    elif icon in ["13d", "13n"]:
+        color = (100, 100, 100)
+        DrawIcon("snow", 3, 6, color)
+    #   Nebbia
+    elif icon in ["50d", "50n"]:
+        color = (100, 100, 100)
+        DrawIcon("fog", 3, 6, color)
     matrix.Show()
-    time.sleep(0.3)
-
-
-
-                      
+    time.sleep(30)
 
 
 
