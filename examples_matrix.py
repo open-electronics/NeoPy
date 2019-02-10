@@ -3,7 +3,7 @@ Description: Examples for NeoPixel 12x12 matrix
 Product: 
 Author: Luca Bellan
 Version: 1.0
-Date: 17-01-2019
+Date: 10-02-2019
 """
 
 
@@ -189,8 +189,8 @@ def DrawIcon(icon, x, y, color):
 
 import pyowm
 
-owm = pyowm.OWM("a38b3852cd6d01808a1a81e0bc44ceb3")
-observation = owm.weather_at_place("milano")
+owm = pyowm.OWM("YOUR_API_KEY")
+observation = owm.weather_at_place("milano,IT")
 
 while True:
     w = observation.get_weather()
