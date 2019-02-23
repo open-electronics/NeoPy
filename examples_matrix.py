@@ -2,8 +2,8 @@
 Description: Examples for NeoPixel 12x12 matrix
 Product: 
 Author: Luca Bellan
-Version: 1.0
-Date: 10-02-2019
+Version: 1.5
+Date: 23-02-2019
 """
 
 
@@ -61,7 +61,7 @@ icons["fog"] = [(0, 0, 0, 0, 0, 0),
 
 
 matrix = NeoPy(144, "192.168.1.8")
-matrix.IsMatrix(True, 2, 12, 12, matrix.BOTTOM_LEFT)
+matrix.IsMatrix(True, 1, 12, 12, matrix.BOTTOM_LEFT)
 
 matrix.SetBrightness(80)
 

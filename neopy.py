@@ -15,7 +15,7 @@ import math
 
 class NeoPy():
 
-    def __init__(self, leds=0, ip = "127.0.0.1", port = 4242):
+    def __init__(self, leds=0, ip = "127.0.0.1", port = 4242, ledsPerPacket=128):
         self.strip = [(0, 0, 0) for i in range(leds)]
         self.brightness = 80
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -30,6 +30,7 @@ class NeoPy():
         self.startled = self.TOP_LEFT
         self.ip = ip
         self.port = port
+        self.ledsPerPacket = ledsPerPacket
         self.Show()
 
     def IsMatrix(self, mode = False, number = 1, w = 1, h = 1, start = 0):
@@ -85,10 +86,16 @@ class NeoPy():
         return len(self.strip)
     
     def Show(self):
-        seq = []
-        for i in range(len(self.strip)):
-            seq.append(int(self.strip[i][0] * self.brightness / 100))
-            seq.append(int(self.strip[i][1] * self.brightness / 100))
-            seq.append(int(self.strip[i][2] * self.brightness / 100))
-        self.sock.sendto(bytearray(seq), (self.ip, self.port))
-
+        numleds = len(self.strip)
+        packetNo = 0
+        i = 0
+        while i < numleds:
+            seq = []
+            seq.append(packetNo)
+            while i < min((packetNo+1)*self.ledsPerPacket, numleds):
+                seq.append(int(self.strip[i][0] * self.brightness / 100))
+                seq.append(int(self.strip[i][1] * self.brightness / 100))
+                seq.append(int(self.strip[i][2] * self.brightness / 100))
+                i += 1
+            self.sock.sendto(bytearray(seq), (self.ip, self.port))
+            packetNo += 1
